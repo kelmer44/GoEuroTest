@@ -10,5 +10,8 @@
     <string name="date">Date</string>
     
     
+    <string name="search">Search is not yet implemented</string>
+    
     <string name="error_no_internet">No internet connection available</string>
+    <string name="information">Information</string>
 </resources>

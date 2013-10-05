@@ -58,36 +58,47 @@
                 android:ems="10" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/dateLayout"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:orientation="vertical" >
+            android:text="@string/date"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/dateText"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:text="@string/date"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+        		android:focusable="false"
+        		android:enabled="false"
+                android:layout_weight="1"
+                android:ems="10" >
+            </EditText>
 
-            <TextView
-                android:id="@+id/dateView"
+            <Button
+                android:id="@+id/dateButton"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?android:attr/editTextColor" />
-        </LinearLayout>
+                android:drawableLeft="@drawable/perm_group_calendar"
+                android:paddingLeft="7dp"
+                android:paddingRight="2dp" />
 
+        </LinearLayout>
+        
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
+            android:layout_gravity="bottom|left"
             android:layout_marginTop="25dp"
+            android:enabled="false"
             android:text="@android:string/search_go" />
+
     </LinearLayout>
 
 </ScrollView>
