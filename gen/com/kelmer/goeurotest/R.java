@@ -51,9 +51,10 @@ public final class R {
         public static final int app_name=0x7f060000;
         public static final int date=0x7f060005;
         public static final int error_no_internet=0x7f060007;
+        public static final int error_no_location=0x7f060008;
         public static final int from=0x7f060003;
         public static final int hello_world=0x7f060002;
-        public static final int information=0x7f060008;
+        public static final int information=0x7f060009;
         public static final int search=0x7f060006;
         public static final int to=0x7f060004;
     }

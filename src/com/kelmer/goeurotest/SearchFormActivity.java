@@ -6,6 +6,7 @@ import android.app.AlertDialog.Builder;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.graphics.PorterDuff;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
@@ -18,8 +19,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.kelmer.goeurotest.model.Location;
+import com.kelmer.goeurotest.model.RemoteLocation;
+import com.kelmer.goeurotest.util.LocationHelper;
+import com.kelmer.goeurotest.util.LocationHelper.LocationResult;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -34,6 +38,15 @@ public class SearchFormActivity extends FragmentActivity {
     private EditText textDate;
     private AutoCompleteTextView to;
     private Button searchButton;
+    
+    private LocationAutoCompleteAdapter fromAdapter;
+    private LocationAutoCompleteAdapter toAdapter;
+    /**
+     * Helpers para obtener la posición actual
+     */
+    private Location mCurrentLocation;
+    private LocationHelper mLocationHelper;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +59,14 @@ public class SearchFormActivity extends FragmentActivity {
         to = (AutoCompleteTextView) findViewById(R.id.to);
         searchButton = (Button) findViewById(R.id.searchButton);
         
-        //from search input
-        from.setAdapter(new LocationAutoCompleteAdapter(this, R.layout.list_item));
+        
+  //from search input
+        fromAdapter = new LocationAutoCompleteAdapter(this, R.layout.list_item);
+        from.setAdapter(fromAdapter);
         from.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
-                setFrom((Location) parent.getItemAtPosition(position));
+                setFrom((RemoteLocation) parent.getItemAtPosition(position));
                 from.requestFocus();
             }
         });
@@ -70,11 +85,12 @@ public class SearchFormActivity extends FragmentActivity {
         });
 
         // To text input
-        to.setAdapter(new LocationAutoCompleteAdapter(this, R.layout.list_item));
+        toAdapter = new LocationAutoCompleteAdapter(this, R.layout.list_item);
+        to.setAdapter(toAdapter);
         to.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
-                setTo((Location) parent.getItemAtPosition(position));
+                setTo((RemoteLocation) parent.getItemAtPosition(position));
                 to.requestFocus();
             }
         });
@@ -128,10 +144,36 @@ public class SearchFormActivity extends FragmentActivity {
                 showAlertDialog(getResources().getString(R.string.information), getResources().getString(R.string.search));
             }
         });
+        
+        
+
+        //Get current location
+        mLocationHelper = new LocationHelper();
+        mLocationHelper.getLocation(SearchFormActivity.this, locationResult);
+        
+      
+        
     }
 
-  
-
+    
+    
+    private LocationResult locationResult = new LocationResult() {
+        @Override
+        public void gotLocation(Location location) {
+            if (location != null) {
+                mCurrentLocation = location;
+                fromAdapter.setLocation(mCurrentLocation);
+                toAdapter.setLocation(mCurrentLocation);
+            } else {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(SearchFormActivity.this, getResources().getString(R.string.error_no_location), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+    };
+    
     protected void checkIfSearchable() {
         if(fromSet && toSet)
         {
@@ -152,7 +194,7 @@ public class SearchFormActivity extends FragmentActivity {
 
 
 
-    private void setFrom(Location loc) {
+    private void setFrom(RemoteLocation loc) {
         if (!mChange) {
             mChange = true;
             AutoCompleteTextView fromView = (AutoCompleteTextView) findViewById(R.id.from);
@@ -174,7 +216,7 @@ public class SearchFormActivity extends FragmentActivity {
         }
     }
 
-    private void setTo(Location loc) {
+    private void setTo(RemoteLocation loc) {
         if (!mChange) {
             mChange = true;
             AutoCompleteTextView toView = (AutoCompleteTextView) findViewById(R.id.to);
