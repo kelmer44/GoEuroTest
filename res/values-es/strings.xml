@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GoEuroTest</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <string name="from">Origen</string>
+    <string name="to">Destino</string>
+    <string name="date">Fecha</string>
+    
+    
+    <string name="search">La función de búsqueda todavía no ha sido implementada.</string>
+    
+    <string name="error_no_internet">No existe conexión a internet</string>
+    <string name="error_no_location">No ha sido posible obtener la posición actual</string>
+    <string name="information">Información</string>
+</resources>
